@@ -17,7 +17,6 @@ export default function MovieReviews() {
       try {
         setIsLoading(true);
         const dataOfReviews = await getMoviesReviews(movieId);
-        console.log(dataOfReviews.results);
         setListOfReviews(dataOfReviews.results);
       } catch (error) {
         return toast.error("This is an error! Please try again later!");

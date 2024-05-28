@@ -1,4 +1,10 @@
-import { Link, NavLink, Outlet, useParams } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 import { useEffect, useState, useRef } from "react";
 import { getMoviesDetails } from "./../../tmdb-api";
@@ -10,7 +16,9 @@ export default function MovieDetailsPafe() {
   const [movieDetails, setMovieDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  //   console.log(movieId);
+  const location = useLocation();
+  const backLinkHref = useRef(location.state ?? "/movies");
+  // console.log(location);
 
   useEffect(() => {
     if (!movieId) return;
@@ -19,7 +27,6 @@ export default function MovieDetailsPafe() {
       try {
         setIsLoading(true);
         const dataOfDetails = await getMoviesDetails(movieId);
-        console.log(dataOfDetails);
         setMovieDetails(dataOfDetails);
       } catch (error) {
         return toast.error("This is an error! Please try again later!");
@@ -31,14 +38,16 @@ export default function MovieDetailsPafe() {
   }, [movieId]);
 
   const defaultImg =
-    "<https://dl-media.viber.com/10/share/2/long/vibes/icon/image/0x0/95e0/5688fdffb84ff8bed4240bcf3ec5ac81ce591d9fa9558a3a968c630eaba195e0.jpg>";
+    "https://dl-media.viber.com/10/share/2/long/vibes/icon/image/0x0/95e0/5688fdffb84ff8bed4240bcf3ec5ac81ce591d9fa9558a3a968c630eaba195e0.jpg";
+
   if (!movieDetails) {
     return;
   }
+
   return (
     <div>
       {isLoading && <Loader />}
-      <Link to="">
+      <Link to={backLinkHref.current}>
         <button className={css.btn}>Go back</button>
       </Link>
       <div className={css.container}>
