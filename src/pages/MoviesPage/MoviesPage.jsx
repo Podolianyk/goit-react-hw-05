@@ -1,6 +1,6 @@
-// import { Link } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getsearchMovie } from "./../../tmdb-api.js";
 import SearchForm from "./../../components/SearchForm/SearchForm";
 import Loader from "./../../components/Loader/Loader.jsx";
@@ -10,6 +10,9 @@ export default function MoviesPage() {
   const [query, setQuery] = useState("");
   const [searchMovies, setSearchMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const movieTitle = searchParams.get("movieTitle") ?? "";
 
   useEffect(() => {
     if (!query) return;
@@ -31,6 +34,8 @@ export default function MoviesPage() {
   const getQuery = (query) => {
     setQuery(query);
     setSearchMovies([]);
+    searchParams.set(movieTitle, query);
+    setSearchParams(searchParams);
   };
 
   return (

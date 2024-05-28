@@ -18,7 +18,7 @@ export default function MovieDetailsPafe() {
 
   const location = useLocation();
   const backLinkHref = useRef(location.state ?? "/movies");
-  // console.log(location);
+  console.log(backLinkHref);
 
   useEffect(() => {
     if (!movieId) return;
