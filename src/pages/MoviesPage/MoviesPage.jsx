@@ -7,7 +7,6 @@ import Loader from "./../../components/Loader/Loader.jsx";
 import MovieList from "./../../components/MovieList/MovieList.jsx";
 
 export default function MoviesPage() {
-  const [query, setQuery] = useState("");
   const [searchMovies, setSearchMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -15,12 +14,12 @@ export default function MoviesPage() {
   const movieTitle = searchParams.get("movieTitle") ?? "";
 
   useEffect(() => {
-    if (!query) return;
+    if (!movieTitle) return;
 
     async function asyncWrapper() {
       try {
         setIsLoading(true);
-        const dataOfMovies = await getsearchMovie(query);
+        const dataOfMovies = await getsearchMovie(movieTitle);
         setSearchMovies(dataOfMovies);
       } catch (error) {
         return toast.error("This is an error! Please try again later!");
@@ -29,13 +28,10 @@ export default function MoviesPage() {
       }
     }
     asyncWrapper();
-  }, [query]);
+  }, [movieTitle]);
 
   const getQuery = (query) => {
-    setQuery(query);
-    setSearchMovies([]);
-    searchParams.set(movieTitle, query);
-    setSearchParams(searchParams);
+    setSearchParams({ movieTitle: query });
   };
 
   return (
